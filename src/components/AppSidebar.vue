@@ -49,13 +49,11 @@ watch(() => route.fullPath, close)
     <!-- Logo + mobile close button -->
     <div class="px-4 py-5 border-b border-base-300 flex items-center justify-between gap-2">
       <router-link to="/" class="flex items-center gap-2.5 group min-w-0">
-        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0 group-hover:opacity-90 transition-opacity">
-          <svg viewBox="0 0 20 20" fill="none" class="w-4.5 h-4.5">
-            <path d="M4 10l3-3 3 3-3 3-3-3zM10 6l3 3-3 3-3-3 3-3zM10 14l3-3 3 3-3 3-3-3z" fill="currentColor" class="text-primary-content" fill-opacity="0.9"/>
-          </svg>
+        <div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center shrink-0 group-hover:opacity-90 transition-opacity overflow-hidden">
+          <img src="/logo.svg" alt="" class="w-6 h-6 object-contain" />
         </div>
         <div class="min-w-0">
-          <p class="text-base-content font-semibold text-sm leading-tight truncate">Open Web Tools</p>
+          <p class="text-base-content font-semibold text-sm leading-tight truncate">Open Dev Kits</p>
           <p class="text-base-content/50 text-xs">Free for developers</p>
         </div>
       </router-link>
@@ -109,10 +107,10 @@ watch(() => route.fullPath, close)
     </nav>
 
     <!-- Footer -->
-    <div class="px-3 py-3 border-t border-base-300 flex items-center justify-between">
+    <div class="px-3 py-3 border-t border-base-300 flex items-center justify-between gap-2">
       <button
         @click="toggle"
-        class="btn btn-ghost btn-xs gap-1.5 text-base-content/60 hover:text-base-content"
+        class="btn btn-ghost btn-xs gap-1.5 text-base-content/60 hover:text-base-content shrink-0"
         :title="dark ? 'Switch to light' : 'Switch to dark'"
       >
         <Sun v-if="dark" class="w-3.5 h-3.5" />
@@ -121,10 +119,20 @@ watch(() => route.fullPath, close)
       </button>
 
       <a
-        href="https://github.com/open-web-tools/open-web-tools"
+        href="https://github.com/surakiatnan"
         target="_blank"
         rel="noopener"
-        class="text-xs text-base-content/40 hover:text-base-content/70 transition-colors"
+        class="text-xs text-base-content/40 hover:text-primary transition-colors truncate"
+        title="Made by @surakiatnan"
+      >
+        @surakiatnan
+      </a>
+
+      <a
+        href="https://github.com/surakiatnan/open-web-tools"
+        target="_blank"
+        rel="noopener"
+        class="text-xs text-base-content/40 hover:text-base-content/70 transition-colors shrink-0"
       >
         GitHub ↗
       </a>

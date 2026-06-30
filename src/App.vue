@@ -29,7 +29,7 @@ const { open, toggle, close } = useSidebar()
         <button @click="toggle" class="btn btn-ghost btn-sm btn-square" aria-label="Toggle sidebar">
           <Menu class="w-5 h-5" />
         </button>
-        <span class="font-semibold text-sm text-base-content">Open Web Tools</span>
+        <span class="font-semibold text-sm text-base-content">Open Dev Kits</span>
       </header>
 
       <main class="flex-1 overflow-y-auto">

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <!-- Open Dev Kits app icon: rounded background tile + mark -->
+  <rect x="0" y="0" width="512" height="512" rx="104" fill="#26215C"/>
+  <rect x="116" y="116" width="128" height="128" rx="22" fill="#AFA9EC"/>
+  <rect x="268" y="116" width="128" height="128" rx="22" fill="#7F77DD"/>
+  <rect x="116" y="268" width="128" height="128" rx="22" fill="#7F77DD"/>
+  <rect x="268" y="268" width="128" height="128" rx="22" fill="#AFA9EC"/>
+  <rect x="178" y="178" width="156" height="156" rx="26" fill="none" stroke="#26215C" stroke-width="22"/>
+</svg>

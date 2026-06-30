@@ -1,6 +1,6 @@
 # Contributing a New Tool
 
-Thank you for contributing to Open Web Tools! This guide walks you through adding a new tool to the project.
+Thank you for contributing to Open Dev Kits! This guide walks you through adding a new tool to the project.
 
 ---
 
@@ -164,7 +164,7 @@ Open `http://localhost:5173` and navigate to your tool via the sidebar or home g
 3. Follow the steps above.
 4. Open a pull request with:
    - A short description of what the tool does.
-   - Why it belongs in Open Web Tools (free, no-account, client-side).
+   - Why it belongs in Open Dev Kits (free, no-account, client-side).
    - A screenshot or screen recording of the tool in action.
 
 We review PRs on a best-effort basis. Thank you!
