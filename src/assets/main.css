@@ -1,0 +1,108 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* ─── OWT Dark (default) ──────────────────────────────────────────────────── */
+/*
+  Palette source:
+    Navy   #124076  → oklch(28% 0.12 258)  — brand / sidebar base / light-mode primary
+    Sage   #7F9F80  → oklch(64% 0.06 148)  — dark-mode primary / light-mode secondary
+    Yellow #F9E897  → oklch(92% 0.12  99)  — warning / accent highlight
+    Orange #FFC374  → oklch(83% 0.15  65)  — accent / call-to-action contrast
+*/
+
+[data-theme="owt-dark"] {
+  color-scheme: dark;
+
+  /* ── Surfaces ── */
+  --color-base-100:    oklch(13% 0.04 258);   /* component surfaces (inputs, cards) */
+  --color-base-200:    oklch( 9% 0.04 258);   /* page background — intentionally darker */
+  --color-base-300:    oklch(19% 0.05 258);   /* elevated panels / hover */
+  --color-base-content:oklch(93% 0.015 258);  /* primary text */
+
+  /* ── Neutral (sidebar "ground floor") ── */
+  --color-neutral:         oklch( 6% 0.03 258);
+  --color-neutral-content: oklch(85% 0.01 258);
+
+  /* ── Primary → Sage (#7F9F80) pops on dark navy ── */
+  --color-primary:         oklch(64% 0.06 148);
+  --color-primary-content: oklch(14% 0.04 148);
+
+  /* ── Secondary → muted mid-navy ── */
+  --color-secondary:         oklch(46% 0.13 258);
+  --color-secondary-content: oklch(93% 0.01 258);
+
+  /* ── Accent → Warm orange (#FFC374) ── */
+  --color-accent:         oklch(83% 0.15 65);
+  --color-accent-content: oklch(20% 0.05 65);
+
+  /* ── Semantic ── */
+  --color-info:            oklch(60% 0.14 232);
+  --color-info-content:    oklch(12%  0    0);
+  --color-success:         oklch(58% 0.10 148);
+  --color-success-content: oklch(12%  0    0);
+  --color-warning:         oklch(92% 0.12  99);   /* Yellow #F9E897 */
+  --color-warning-content: oklch(18% 0.05  99);
+  --color-error:           oklch(62% 0.22  25);
+  --color-error-content:   oklch(96%  0    0);
+
+  /* ── Shape ── */
+  --rounded-box:   0.75rem;
+  --rounded-btn:   0.5rem;
+  --rounded-badge: 9999px;
+  --border:        1px;
+  --depth:         1;
+  --noise:         0;
+}
+
+/* ─── OWT Light ───────────────────────────────────────────────────────────── */
+[data-theme="owt-light"] {
+  color-scheme: light;
+
+  /* ── Surfaces ── */
+  --color-base-100:    oklch(100%  0    0);    /* white — cards, inputs */
+  --color-base-200:    oklch( 96% 0.012 258);  /* page background */
+  --color-base-300:    oklch( 89% 0.02  258);  /* borders / dividers */
+  --color-base-content:oklch( 20% 0.08  258);  /* dark navy text */
+
+  /* ── Neutral (deep navy) ── */
+  --color-neutral:         oklch(20% 0.08 258);
+  --color-neutral-content: oklch(97%  0    0);
+
+  /* ── Primary → Navy (#124076) on white ── */
+  --color-primary:         oklch(28% 0.12 258);
+  --color-primary-content: oklch(96% 0.01  99); /* warm white */
+
+  /* ── Secondary → Sage (#7F9F80) ── */
+  --color-secondary:         oklch(64% 0.06 148);
+  --color-secondary-content: oklch(14% 0.04 148);
+
+  /* ── Accent → Warm orange (#FFC374) ── */
+  --color-accent:         oklch(83% 0.15 65);
+  --color-accent-content: oklch(20% 0.05 65);
+
+  /* ── Semantic ── */
+  --color-info:            oklch(55% 0.15 232);
+  --color-info-content:    oklch(96%  0    0);
+  --color-success:         oklch(56% 0.10 148);
+  --color-success-content: oklch(96%  0    0);
+  --color-warning:         oklch(78% 0.12  99);  /* muted yellow — readable on white */
+  --color-warning-content: oklch(18% 0.05  99);
+  --color-error:           oklch(58% 0.22  25);
+  --color-error-content:   oklch(96%  0    0);
+
+  /* ── Shape ── */
+  --rounded-box:   0.75rem;
+  --rounded-btn:   0.5rem;
+  --rounded-badge: 9999px;
+  --border:        1px;
+  --depth:         1;
+  --noise:         0;
+}
+
+/* ─── Global resets ───────────────────────────────────────────────────────── */
+html, body, #app { height: 100%; margin: 0; }
+
+::-webkit-scrollbar        { width: 5px; height: 5px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: oklch(50% 0 0 / 0.25); border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: oklch(50% 0 0 / 0.4); }
