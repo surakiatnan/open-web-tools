@@ -2,9 +2,16 @@
 import { ref, computed, onMounted } from 'vue'
 import { Search } from 'lucide-vue-next'
 import ToolCard from '@/components/ToolCard.vue'
-import { tools } from '@/tools/registry'
+import { tools, toolsById } from '@/tools/registry'
+import { useRecentTools } from '@/composables/useRecentTools'
+import { useCommandPalette } from '@/composables/useCommandPalette'
 
 onMounted(() => { document.title = 'Open Dev Kits — Free Developer Tools' })
+
+const { recentIds } = useRecentTools()
+const { show: showPalette } = useCommandPalette()
+
+const recentTools = computed(() => recentIds.value.map((id) => toolsById[id]).filter(Boolean))
 
 const query = ref('')
 
@@ -35,7 +42,22 @@ const filtered = computed(() => {
           placeholder="Filter tools…"
           class="grow bg-transparent outline-none text-sm"
         />
+        <button
+          @click="showPalette"
+          class="kbd kbd-sm shrink-0 hidden sm:inline-flex text-base-content/40 hover:text-base-content/70"
+          title="Open command palette"
+        >
+          ⌘K
+        </button>
       </label>
+    </div>
+
+    <!-- Recently used -->
+    <div v-if="!query && recentTools.length" class="mb-8">
+      <p class="text-xs font-semibold uppercase tracking-wider text-base-content/40 mb-3">Recently used</p>
+      <div class="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <ToolCard v-for="tool in recentTools" :key="tool.id" :tool="tool" />
+      </div>
     </div>
 
     <!-- Grid -->

@@ -1,19 +1,32 @@
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ToastStack from '@/components/ToastStack.vue'
+import CommandPalette from '@/components/CommandPalette.vue'
 import { useTheme } from '@/composables/useTheme'
 import { useSidebar } from '@/composables/useSidebar'
+import { useCommandPalette } from '@/composables/useCommandPalette'
 import { toolsById } from '@/tools/registry'
 import { getIcon, Menu, Moon, Sun } from '@/utils/icons'
 
 const route = useRoute()
 const { dark, toggle: toggleTheme } = useTheme()
 const { open, toggle, close } = useSidebar()
+const { toggle: togglePalette } = useCommandPalette()
 
 // Mobile top bar shows the current tool instead of a static app name.
 const currentTool = computed(() => toolsById[route.params.toolId])
+
+// Ctrl/Cmd+K opens the command palette from anywhere in the app.
+function onGlobalKeydown(e) {
+  if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+    e.preventDefault()
+    togglePalette()
+  }
+}
+onMounted(() => window.addEventListener('keydown', onGlobalKeydown))
+onUnmounted(() => window.removeEventListener('keydown', onGlobalKeydown))
 </script>
 
 <template>
@@ -62,6 +75,7 @@ const currentTool = computed(() => toolsById[route.params.toolId])
     </div>
 
     <ToastStack />
+    <CommandPalette />
   </div>
 </template>
 

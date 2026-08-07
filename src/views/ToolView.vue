@@ -3,14 +3,17 @@ import { computed, watchEffect } from 'vue'
 import { useRoute } from 'vue-router'
 import { toolsById } from '@/tools/registry'
 import { getIcon } from '@/utils/icons'
+import { useRecentTools } from '@/composables/useRecentTools'
 import CopyButton from '@/components/CopyButton.vue'
 
 const route = useRoute()
 const tool  = computed(() => toolsById[route.params.toolId])
+const { track } = useRecentTools()
 
 // Per-tool browser tab title — helps when several tools are open in different tabs.
 watchEffect(() => {
   document.title = tool.value ? `${tool.value.name} — Open Dev Kits` : 'Tool not found — Open Dev Kits'
+  if (tool.value) track(tool.value.id)
 })
 
 const toolUrl = computed(() => window.location.href)
