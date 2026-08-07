@@ -1,16 +1,16 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Copy, RefreshCw } from 'lucide-vue-next'
+import { RefreshCw } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const WORDS = 'lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua ut enim ad minim veniam quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur excepteur sint occaecat cupidatat non proident sunt in culpa qui officia deserunt mollit anim id est laborum'.split(' ')
 
 const CLASSIC = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
 
-const type     = ref('paragraphs')
-const count    = ref(3)
-const classic  = ref(true)
-const seed     = ref(0)
-const copied   = ref(false)
+const type    = ref('paragraphs')
+const count   = ref(3)
+const classic = ref(true)
+const seed    = ref(0)
 
 function rng(n) {
   // deterministic-ish shuffle from seed + index
@@ -45,12 +45,6 @@ const output = computed(() => {
 })
 
 function regenerate() { seed.value = (seed.value + 1) % 10000 }
-
-async function copy() {
-  await navigator.clipboard.writeText(output.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
-}
 </script>
 
 <template>
@@ -90,9 +84,7 @@ async function copy() {
           <button @click="regenerate" class="btn btn-ghost btn-xs gap-1.5">
             <RefreshCw class="w-3 h-3" /> Regenerate
           </button>
-          <button @click="copy" class="btn btn-ghost btn-xs gap-1.5">
-            <Copy class="w-3 h-3" /> {{ copied ? 'Copied!' : 'Copy' }}
-          </button>
+          <CopyButton :text="output" />
         </div>
       </div>
       <div class="bg-base-100 border border-base-300 rounded-box px-5 py-4 text-sm text-base-content leading-relaxed whitespace-pre-wrap select-all">

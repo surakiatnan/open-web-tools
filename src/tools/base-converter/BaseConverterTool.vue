@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue'
-import { Copy } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const BASES = [
   { key: 'dec', label: 'Decimal',     radix: 10, hint: '255',      pattern: /^-?[0-9]+$/ },
@@ -11,7 +11,6 @@ const BASES = [
 
 const values = ref({ dec: '', hex: '', bin: '', oct: '' })
 const error  = ref('')
-const copied = ref('')
 let updating = false
 
 function fromBase(srcKey) {
@@ -44,12 +43,6 @@ function fromBase(srcKey) {
   })
   updating = false
 }
-
-async function copy(val) {
-  await navigator.clipboard.writeText(val)
-  copied.value = val
-  setTimeout(() => (copied.value = ''), 1500)
-}
 </script>
 
 <template>
@@ -60,14 +53,7 @@ async function copy(val) {
           {{ b.label }}
           <span class="ml-1.5 text-xs text-base-content/30 font-mono">base {{ b.radix }}</span>
         </label>
-        <button
-          v-if="values[b.key]"
-          @click="copy(values[b.key])"
-          class="btn btn-ghost btn-xs gap-1"
-        >
-          <Copy class="w-3 h-3" />
-          {{ copied === values[b.key] ? 'Copied!' : 'Copy' }}
-        </button>
+        <CopyButton :text="values[b.key]" />
       </div>
       <input
         v-model="values[b.key]"

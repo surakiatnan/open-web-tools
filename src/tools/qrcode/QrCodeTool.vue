@@ -2,6 +2,9 @@
 import { ref, watch, onMounted } from 'vue'
 import QRCode from 'qrcode'
 import { Download, Copy } from 'lucide-vue-next'
+import { useToast } from '@/composables/useToast'
+
+const { show } = useToast()
 
 const input      = ref('https://example.com')
 const size       = ref(256)
@@ -10,7 +13,6 @@ const bgColor    = ref('#ffffff')
 const errorLevel = ref('M')
 const dataUrl    = ref('')
 const error      = ref('')
-const copied     = ref(false)
 
 const errorLevels = [
   { value: 'L', label: 'L — Low (7%)'       },
@@ -43,11 +45,14 @@ function download() {
 }
 
 async function copyImage() {
-  const res  = await fetch(dataUrl.value)
-  const blob = await res.blob()
-  await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })])
-  copied.value = true
-  setTimeout(() => (copied.value = false), 2000)
+  try {
+    const res  = await fetch(dataUrl.value)
+    const blob = await res.blob()
+    await navigator.clipboard.write([new ClipboardItem({ [blob.type]: blob })])
+    show('QR code image copied to clipboard')
+  } catch {
+    show('Couldn\'t copy — check clipboard permissions for this site.', 'warning', 3000)
+  }
 }
 
 watch([input, size, fgColor, bgColor, errorLevel], generate)
@@ -119,7 +124,7 @@ onMounted(generate)
         </button>
         <button @click="copyImage" class="btn btn-outline gap-2">
           <Copy class="w-4 h-4" />
-          {{ copied ? 'Copied!' : 'Copy' }}
+          Copy
         </button>
       </div>
     </div>

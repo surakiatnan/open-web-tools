@@ -1,9 +1,9 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Copy, Trash2, ClipboardPaste } from 'lucide-vue-next'
+import { Trash2, ClipboardPaste } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
-const text   = ref('')
-const copied = ref(false)
+const text = ref('')
 
 const stats = computed(() => {
   const t = text.value
@@ -63,12 +63,6 @@ const actions = [
 
 function apply(fn) { text.value = fn(text.value) }
 
-async function copy() {
-  await navigator.clipboard.writeText(text.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
-}
-
 async function paste() {
   text.value = await navigator.clipboard.readText()
 }
@@ -110,10 +104,7 @@ async function paste() {
               <ClipboardPaste class="w-3.5 h-3.5" />
               <span class="hidden sm:inline">Paste</span>
             </button>
-            <button @click="copy" :disabled="!text" class="btn btn-ghost btn-xs gap-1.5">
-              <Copy class="w-3.5 h-3.5" />
-              <span class="hidden sm:inline">{{ copied ? 'Copied!' : 'Copy' }}</span>
-            </button>
+            <CopyButton :text="text" label-class="hidden sm:inline" />
             <button
               @click="text = ''"
               :disabled="!text"

@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Copy, Download } from 'lucide-vue-next'
+import { Download } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const input  = ref('')
 const indent = ref('2')
 const mode   = ref('prettify')
-const copied = ref(false)
 
 const result = computed(() => {
   if (!input.value.trim()) return { output: '', error: null }
@@ -18,13 +18,6 @@ const result = computed(() => {
     return { output: '', error: e.message }
   }
 })
-
-async function copy() {
-  if (!result.value.output) return
-  await navigator.clipboard.writeText(result.value.output)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
-}
 
 function download() {
   const blob = new Blob([result.value.output], { type: 'application/json' })
@@ -70,9 +63,7 @@ function download() {
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-base-content">Output</span>
           <div class="flex gap-1">
-            <button v-if="result.output" @click="copy" class="btn btn-ghost btn-xs gap-1.5">
-              <Copy class="w-3 h-3" /> {{ copied ? 'Copied!' : 'Copy' }}
-            </button>
+            <CopyButton :text="result.output" />
             <button v-if="result.output" @click="download" class="btn btn-ghost btn-xs gap-1.5">
               <Download class="w-3 h-3" /> Save
             </button>

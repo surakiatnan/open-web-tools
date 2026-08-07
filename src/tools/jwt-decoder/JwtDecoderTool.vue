@@ -1,6 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Copy, AlertCircle, CheckCircle2, Clock } from 'lucide-vue-next'
+import { AlertCircle, CheckCircle2, Clock } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const token = ref('')
 
@@ -33,14 +34,6 @@ const decoded = computed(() => {
 
 function fmtTs(ts) {
   return ts ? new Date(ts * 1000).toLocaleString() : null
-}
-
-const copied = ref('')
-async function copy(obj) {
-  const val = JSON.stringify(obj, null, 2)
-  await navigator.clipboard.writeText(val)
-  copied.value = JSON.stringify(obj)
-  setTimeout(() => (copied.value = ''), 1500)
 }
 </script>
 
@@ -80,10 +73,7 @@ async function copy(obj) {
         <div class="bg-base-100 border border-base-300 rounded-box p-4 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold uppercase tracking-wider text-base-content/40">Header</span>
-            <button @click="copy(decoded.header)" class="btn btn-ghost btn-xs gap-1">
-              <Copy class="w-3 h-3" />
-              {{ copied === JSON.stringify(decoded.header) ? 'Copied!' : 'Copy' }}
-            </button>
+            <CopyButton :text="JSON.stringify(decoded.header, null, 2)" />
           </div>
           <pre class="font-mono text-xs text-base-content overflow-x-auto leading-relaxed">{{ JSON.stringify(decoded.header, null, 2) }}</pre>
         </div>
@@ -92,10 +82,7 @@ async function copy(obj) {
         <div class="bg-base-100 border border-base-300 rounded-box p-4 space-y-2">
           <div class="flex items-center justify-between">
             <span class="text-xs font-semibold uppercase tracking-wider text-base-content/40">Payload</span>
-            <button @click="copy(decoded.payload)" class="btn btn-ghost btn-xs gap-1">
-              <Copy class="w-3 h-3" />
-              {{ copied === JSON.stringify(decoded.payload) ? 'Copied!' : 'Copy' }}
-            </button>
+            <CopyButton :text="JSON.stringify(decoded.payload, null, 2)" />
           </div>
           <pre class="font-mono text-xs text-base-content overflow-x-auto leading-relaxed">{{ JSON.stringify(decoded.payload, null, 2) }}</pre>
           <!-- Time claims -->

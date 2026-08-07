@@ -1,9 +1,8 @@
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue'
-import { Copy } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
-const now    = ref(Math.floor(Date.now() / 1000))
-const copied = ref('')
+const now = ref(Math.floor(Date.now() / 1000))
 let timer
 
 onMounted(() => { timer = setInterval(() => { now.value = Math.floor(Date.now() / 1000) }, 1000) })
@@ -46,12 +45,6 @@ function relativeTime(ts) {
   if (abs < 86400) return `${Math.floor(abs / 3600)}h ${past ? 'ago' : 'from now'}`
   return `${Math.floor(abs / 86400)}d ${past ? 'ago' : 'from now'}`
 }
-
-async function copy(val) {
-  await navigator.clipboard.writeText(String(val))
-  copied.value = String(val)
-  setTimeout(() => (copied.value = ''), 1500)
-}
 </script>
 
 <template>
@@ -63,9 +56,7 @@ async function copy(val) {
       <div class="flex items-baseline gap-3 flex-wrap">
         <span class="font-mono text-3xl font-bold text-base-content tabular-nums">{{ now.toLocaleString() }}</span>
         <span class="text-sm text-base-content/40">seconds</span>
-        <button @click="copy(now)" class="btn btn-ghost btn-xs gap-1.5 ml-auto">
-          <Copy class="w-3 h-3" /> {{ copied === String(now) ? 'Copied!' : 'Copy' }}
-        </button>
+        <CopyButton :text="String(now)" class="ml-auto" />
       </div>
       <p class="text-xs text-base-content/40 mt-2 font-mono">{{ new Date().toUTCString() }}</p>
     </div>
@@ -87,7 +78,7 @@ async function copy(val) {
         >
           <span class="text-xs text-base-content/40 w-16 shrink-0">{{ label }}</span>
           <span class="font-mono text-xs text-base-content flex-1 truncate">{{ val }}</span>
-          <button @click="copy(val)" class="btn btn-ghost btn-xs shrink-0"><Copy class="w-3 h-3" /></button>
+          <CopyButton :text="String(val)" label="" class="shrink-0" />
         </div>
         <p class="px-4 py-1.5 text-xs text-base-content/30">Detected as {{ fromEpoch.isMs ? 'milliseconds' : 'seconds' }}</p>
       </div>
@@ -109,7 +100,7 @@ async function copy(val) {
         >
           <span class="text-xs text-base-content/40 w-24 shrink-0">{{ label }}</span>
           <span class="font-mono text-xs text-base-content flex-1">{{ val.toLocaleString() }}</span>
-          <button @click="copy(val)" class="btn btn-ghost btn-xs shrink-0"><Copy class="w-3 h-3" /></button>
+          <CopyButton :text="String(val)" label="" class="shrink-0" />
         </div>
       </div>
     </section>

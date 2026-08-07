@@ -1,14 +1,16 @@
 <script setup>
 import { ref } from 'vue'
 import { v1 as uuidv1, v4 as uuidv4, v7 as uuidv7 } from 'uuid'
-import { RefreshCw, Copy, Trash2, CheckCheck } from 'lucide-vue-next'
+import { RefreshCw, Trash2, CheckCheck } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
+import { useToast } from '@/composables/useToast'
 
-const version     = ref('v4')
-const count       = ref(1)
-const format      = ref('default')
-const uuids       = ref([])
-const copiedIndex = ref(-1)
-const copiedAll   = ref(false)
+const { show } = useToast()
+
+const version = ref('v4')
+const count   = ref(1)
+const format  = ref('default')
+const uuids   = ref([])
 
 const versions = [
   { value: 'v1', label: 'v1 — Time-based'    },
@@ -33,16 +35,13 @@ function generate() {
   uuids.value = Array.from({ length: count.value }, makeOne)
 }
 
-async function copyOne(idx) {
-  await navigator.clipboard.writeText(uuids.value[idx])
-  copiedIndex.value = idx
-  setTimeout(() => (copiedIndex.value = -1), 1500)
-}
-
 async function copyAll() {
-  await navigator.clipboard.writeText(uuids.value.join('\n'))
-  copiedAll.value = true
-  setTimeout(() => (copiedAll.value = false), 1500)
+  try {
+    await navigator.clipboard.writeText(uuids.value.join('\n'))
+    show(`${uuids.value.length} UUIDs copied`)
+  } catch {
+    show('Couldn\'t copy — check clipboard permissions for this site.', 'warning', 3000)
+  }
 }
 
 generate()
@@ -79,7 +78,7 @@ generate()
       </button>
       <button v-if="uuids.length > 1" @click="copyAll" class="btn btn-outline gap-2">
         <CheckCheck class="w-4 h-4" />
-        {{ copiedAll ? 'Copied all!' : `Copy all (${uuids.length})` }}
+        Copy all ({{ uuids.length }})
       </button>
       <button v-if="uuids.length" @click="uuids = []" class="btn btn-ghost btn-outline gap-2 ml-auto">
         <Trash2 class="w-4 h-4" /> Clear
@@ -94,15 +93,13 @@ generate()
         class="group flex items-center justify-between bg-base-100 border border-base-300 rounded-btn px-4 py-2.5 hover:border-primary/40 transition-colors"
       >
         <code class="font-mono text-sm text-base-content select-all">{{ id }}</code>
-        <button
-          @click="copyOne(i)"
-          class="shrink-0 ml-3 text-base-content/30 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+        <CopyButton
+          :text="id"
+          icon-only
           title="Copy"
-        >
-          <Copy class="w-4 h-4" />
-        </button>
+          class="shrink-0 ml-3 text-base-content/30 hover:text-primary transition-colors opacity-0 group-hover:opacity-100"
+        />
       </div>
-      <p v-if="copiedIndex >= 0" class="text-xs text-primary text-right">Copied to clipboard</p>
     </div>
   </div>
 </template>
