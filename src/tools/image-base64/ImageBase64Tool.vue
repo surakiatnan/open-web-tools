@@ -1,13 +1,15 @@
 <script setup>
 import { ref } from 'vue'
 import { ImageUp, Copy, X } from 'lucide-vue-next'
+import { useToast } from '@/composables/useToast'
+
+const { show } = useToast()
 
 const dragging   = ref(false)
 const dataUri    = ref('')
 const base64Only = ref('')
 const meta       = ref(null)
 const mode       = ref('datauri')
-const copied     = ref(false)
 
 function loadFile(file) {
   if (!file || !file.type.startsWith('image/')) return
@@ -46,9 +48,12 @@ function fmt(bytes) {
 
 async function copy() {
   const val = mode.value === 'datauri' ? dataUri.value : base64Only.value
-  await navigator.clipboard.writeText(val)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
+  try {
+    await navigator.clipboard.writeText(val)
+    show('Copied to clipboard')
+  } catch {
+    show('Couldn\'t copy — check clipboard permissions for this site.', 'warning', 3000)
+  }
 }
 </script>
 
@@ -98,7 +103,7 @@ async function copy() {
         </div>
         <button @click="copy" class="btn btn-outline btn-sm gap-2">
           <Copy class="w-4 h-4" />
-          {{ copied ? 'Copied!' : 'Copy output' }}
+          Copy output
         </button>
       </div>
 

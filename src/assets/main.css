@@ -102,6 +102,19 @@
 /* ─── Global resets ───────────────────────────────────────────────────────── */
 html, body, #app { height: 100%; margin: 0; }
 
+/*
+  iOS Safari auto-zooms into any text field with a computed font-size under 16px.
+  Nearly every input/textarea here uses text-sm (14px) for density, so force 16px
+  on mobile only — !important is deliberate, it needs to beat utility classes.
+*/
+@media (max-width: 767px) {
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='color']),
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
 ::-webkit-scrollbar        { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track  { background: transparent; }
 ::-webkit-scrollbar-thumb  { background: oklch(50% 0 0 / 0.25); border-radius: 9999px; }

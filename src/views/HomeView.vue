@@ -1,8 +1,10 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { Search } from 'lucide-vue-next'
 import ToolCard from '@/components/ToolCard.vue'
 import { tools } from '@/tools/registry'
+
+onMounted(() => { document.title = 'Open Dev Kits — Free Developer Tools' })
 
 const query = ref('')
 

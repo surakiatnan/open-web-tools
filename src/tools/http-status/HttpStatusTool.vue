@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { Copy } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const STATUSES = [
   { code: 100, name: 'Continue',                        desc: 'The server received the request headers; the client should proceed to send the body.' },
@@ -69,9 +69,8 @@ const STATUSES = [
 const BADGE = { 1: 'badge-info', 2: 'badge-success', 3: 'badge-warning', 4: 'badge-error', 5: 'badge-error' }
 const TABS  = ['All', '1xx', '2xx', '3xx', '4xx', '5xx']
 
-const tab    = ref('All')
-const query  = ref('')
-const copied = ref('')
+const tab   = ref('All')
+const query = ref('')
 
 const filtered = computed(() => {
   let list = STATUSES
@@ -83,12 +82,6 @@ const filtered = computed(() => {
   if (q) list = list.filter((s) => String(s.code).includes(q) || s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q))
   return list
 })
-
-async function copy(code) {
-  await navigator.clipboard.writeText(String(code))
-  copied.value = String(code)
-  setTimeout(() => (copied.value = ''), 1500)
-}
 </script>
 
 <template>
@@ -127,14 +120,13 @@ async function copy(code) {
           <p class="text-sm font-medium text-base-content leading-snug">{{ s.name }}</p>
           <p class="text-xs text-base-content/50 mt-0.5 leading-relaxed">{{ s.desc }}</p>
         </div>
-        <button
-          @click="copy(s.code)"
-          class="btn btn-ghost btn-xs shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+        <CopyButton
+          :text="String(s.code)"
+          label=""
+          success-message="Status code copied"
           title="Copy code"
-        >
-          <Copy class="w-3 h-3" />
-          <span v-if="copied === String(s.code)" class="text-success">✓</span>
-        </button>
+          class="shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+        />
       </div>
 
       <div v-if="!filtered.length" class="text-center py-10 text-base-content/40 text-sm">

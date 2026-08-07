@@ -1,10 +1,10 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { ArrowLeftRight, Copy } from 'lucide-vue-next'
+import { ArrowLeftRight } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const mode   = ref('encode') // 'encode' | 'decode'
 const input  = ref('')
-const copied = ref(false)
 const error  = ref('')
 
 function encodeUtf8(str) {
@@ -40,13 +40,6 @@ function swap() {
   const prev = output.value
   mode.value = mode.value === 'encode' ? 'decode' : 'encode'
   input.value = prev
-}
-
-async function copy() {
-  if (!output.value) return
-  await navigator.clipboard.writeText(output.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
 }
 
 async function paste() {
@@ -108,14 +101,7 @@ const outputLabel = computed(() => mode.value === 'encode' ? 'Base64'     : 'Pla
       <div class="space-y-1.5">
         <div class="flex items-center justify-between">
           <span class="text-sm font-medium text-base-content">{{ outputLabel }}</span>
-          <button
-            v-if="output"
-            @click="copy"
-            class="btn btn-ghost btn-xs gap-1.5"
-          >
-            <Copy class="w-3 h-3" />
-            {{ copied ? 'Copied!' : 'Copy' }}
-          </button>
+          <CopyButton :text="output" />
         </div>
         <div
           class="w-full border rounded-box px-4 py-3 text-sm font-mono leading-relaxed min-h-52 break-all whitespace-pre-wrap"

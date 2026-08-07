@@ -1,11 +1,10 @@
 <script setup>
 import { ref, watch } from 'vue'
-import { Copy } from 'lucide-vue-next'
+import CopyButton from '@/components/CopyButton.vue'
 
 const input  = ref('')
 const format = ref('hex')
 const hashes = ref({})
-const copied = ref('')
 
 const ALGOS = ['SHA-1', 'SHA-256', 'SHA-512']
 
@@ -30,12 +29,6 @@ async function compute(text) {
 }
 
 watch(input, compute, { immediate: true })
-
-async function copy(val) {
-  await navigator.clipboard.writeText(val)
-  copied.value = val
-  setTimeout(() => (copied.value = ''), 1500)
-}
 </script>
 
 <template>
@@ -63,10 +56,7 @@ async function copy(val) {
       >
         <div class="flex items-center justify-between gap-2">
           <span class="font-mono text-xs font-semibold text-base-content/40 uppercase tracking-wider">{{ algo }}</span>
-          <button @click="copy(hashes[algo][format])" class="btn btn-ghost btn-xs gap-1.5">
-            <Copy class="w-3 h-3" />
-            {{ copied === hashes[algo][format] ? 'Copied!' : 'Copy' }}
-          </button>
+          <CopyButton :text="hashes[algo][format]" />
         </div>
         <p class="font-mono text-xs text-base-content break-all leading-relaxed select-all">{{ hashes[algo][format] }}</p>
         <p class="text-xs text-base-content/30">{{ hashes[algo][format].length }} chars</p>

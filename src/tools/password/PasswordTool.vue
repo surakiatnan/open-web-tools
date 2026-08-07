@@ -1,10 +1,12 @@
 <script setup>
 import { ref, reactive, computed, watch } from 'vue'
 import { RefreshCw, Copy, Eye, EyeOff } from 'lucide-vue-next'
+import { useToast } from '@/composables/useToast'
+
+const { show } = useToast()
 
 const password = ref('')
-const copied   = ref(false)
-const visible  = ref(false)
+const visible   = ref(false)
 
 const config = reactive({
   length:    16,
@@ -56,9 +58,12 @@ const strength = computed(() => {
 
 async function copy() {
   if (!password.value) return
-  await navigator.clipboard.writeText(password.value)
-  copied.value = true
-  setTimeout(() => (copied.value = false), 1500)
+  try {
+    await navigator.clipboard.writeText(password.value)
+    show('Password copied to clipboard')
+  } catch {
+    show('Couldn\'t copy — check clipboard permissions for this site.', 'warning', 3000)
+  }
 }
 
 watch(config, generate, { deep: true })
@@ -108,7 +113,7 @@ generate()
       </button>
       <button @click="copy" :disabled="!password" class="btn btn-outline gap-2">
         <Copy class="w-4 h-4" />
-        {{ copied ? 'Copied!' : 'Copy' }}
+        Copy
       </button>
     </div>
 
