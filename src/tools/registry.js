@@ -29,12 +29,17 @@ import baseConverter from './base-converter'
 import httpStatus from './http-status'
 import loremIpsum from './lorem-ipsum'
 import imageBase64 from './image-base64'
+import urlEncoder from './url-encoder'
+import colorConverter from './color-converter'
+import regexTester from './regex-tester'
+import diffChecker from './diff-checker'
 
 /** @type {import('./types').ToolMeta[]} */
 export const tools = [
   qrcode, uuid, password, textManager, base64,
   jsonFormatter, jwtDecoder, hashGenerator, unixTimestamp, baseConverter,
   httpStatus, loremIpsum, imageBase64,
+  urlEncoder, colorConverter, regexTester, diffChecker,
 ]
 
 /** Quick lookup by ID */
