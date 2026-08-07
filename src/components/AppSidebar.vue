@@ -3,15 +3,21 @@ import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { Search, X } from 'lucide-vue-next'
 import { Moon, Sun } from '@/utils/icons'
-import { toolsByCategory } from '@/tools/registry'
+import { toolsByCategory, toolsById } from '@/tools/registry'
 import { getIcon } from '@/utils/icons'
 import { useTheme } from '@/composables/useTheme'
 import { useSidebar } from '@/composables/useSidebar'
+import { useCommandPalette } from '@/composables/useCommandPalette'
+import { useRecentTools } from '@/composables/useRecentTools'
 
 const route = useRoute()
 const query = ref('')
 const { dark, toggle } = useTheme()
 const { open, close } = useSidebar()
+const { show: showPalette } = useCommandPalette()
+const { recentIds } = useRecentTools()
+
+const recentTools = computed(() => recentIds.value.map((id) => toolsById[id]).filter(Boolean))
 
 const filteredByCategory = computed(() => {
   const q = query.value.toLowerCase().trim()
@@ -80,6 +86,14 @@ watch(() => route.fullPath, close)
         <button v-if="query" @click="query = ''" class="text-base-content/40 hover:text-base-content/70">
           <X class="w-3 h-3" />
         </button>
+        <button
+          v-else
+          @click="showPalette"
+          class="kbd kbd-sm shrink-0 hidden lg:inline-flex text-base-content/40 hover:text-base-content/70"
+          title="Open command palette"
+        >
+          ⌘K
+        </button>
       </label>
     </div>
 
@@ -88,6 +102,21 @@ watch(() => route.fullPath, close)
       <div v-if="!Object.keys(filteredByCategory).length" class="py-8 text-center text-base-content/40 text-sm">
         No tools match "{{ query }}"
       </div>
+
+      <!-- Recent tools — hidden while searching to avoid duplicating results -->
+      <ul v-if="!query && recentTools.length" class="menu p-0 gap-0.5 mt-2">
+        <li class="menu-title text-xs text-base-content/40 uppercase tracking-wider px-2 pt-2 pb-0.5">Recent</li>
+        <li v-for="tool in recentTools" :key="tool.id">
+          <router-link
+            :to="`/${tool.id}`"
+            class="gap-2.5 text-sm rounded-lg"
+            :class="isActive(tool.id) ? 'active font-medium' : 'text-base-content/70 hover:text-base-content'"
+          >
+            <component :is="getIcon(tool.icon)" class="w-4 h-4 shrink-0" />
+            {{ tool.name }}
+          </router-link>
+        </li>
+      </ul>
 
       <ul v-for="(list, category) in filteredByCategory" :key="category" class="menu p-0 gap-0.5 mt-2">
         <li class="menu-title text-xs text-base-content/40 uppercase tracking-wider px-2 pt-2 pb-0.5">
