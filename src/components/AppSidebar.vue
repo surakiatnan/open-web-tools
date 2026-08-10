@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { Search, X } from 'lucide-vue-next'
+import { Github, Search, X } from 'lucide-vue-next'
 import { Moon, Sun } from '@/utils/icons'
 import { toolsByCategory, toolsById } from '@/tools/registry'
 import { getIcon } from '@/utils/icons'
@@ -9,10 +9,11 @@ import { useTheme } from '@/composables/useTheme'
 import { useSidebar } from '@/composables/useSidebar'
 import { useCommandPalette } from '@/composables/useCommandPalette'
 import { useRecentTools } from '@/composables/useRecentTools'
+import ThemePicker from '@/components/ThemePicker.vue'
 
 const route = useRoute()
 const query = ref('')
-const { dark, toggle } = useTheme()
+const { sidebarThemeId } = useTheme()
 const { open, close } = useSidebar()
 const { show: showPalette } = useCommandPalette()
 const { recentIds } = useRecentTools()
@@ -44,7 +45,7 @@ watch(() => route.fullPath, close)
     Desktop (lg+): relative inline sidebar, always visible, transform reset.
   -->
   <aside
-    data-theme="owt-dark"
+    :data-theme="sidebarThemeId"
     class="fixed inset-y-0 left-0 z-30
            lg:relative lg:z-auto lg:translate-x-0
            w-64 shrink-0 bg-neutral flex flex-col h-screen
@@ -136,34 +137,47 @@ watch(() => route.fullPath, close)
     </nav>
 
     <!-- Footer -->
-    <div class="px-3 py-3 border-t border-base-300 flex items-center justify-between gap-2">
-      <button
-        @click="toggle"
-        class="btn btn-ghost btn-xs gap-1.5 text-base-content/60 hover:text-base-content shrink-0"
-        :title="dark ? 'Switch to light' : 'Switch to dark'"
-      >
-        <Sun v-if="dark" class="w-3.5 h-3.5" />
-        <Moon v-else class="w-3.5 h-3.5" />
-        <span>{{ dark ? 'Light' : 'Dark' }}</span>
-      </button>
+    <div class="border-t border-base-300">
+      <div class="px-3 py-2.5 flex items-center justify-between gap-2">
+        <ThemePicker panel-class="bottom-full left-0 mb-2">
+          <template #trigger="{ toggle: openPicker, dark }">
+            <button
+              @click="openPicker"
+              class="btn btn-ghost btn-xs gap-1.5 text-base-content/60 hover:text-base-content"
+              title="Change theme"
+            >
+              <Sun v-if="dark" class="w-3.5 h-3.5" />
+              <Moon v-else class="w-3.5 h-3.5" />
+              <span>Theme</span>
+            </button>
+          </template>
+        </ThemePicker>
+
+        <a
+          href="https://github.com/surakiatnan/open-web-tools"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-ghost btn-xs btn-square text-base-content/60 hover:text-base-content"
+          title="View source on GitHub"
+          aria-label="View source on GitHub"
+        >
+          <Github class="w-3.5 h-3.5" />
+        </a>
+      </div>
 
       <a
         href="https://github.com/surakiatnan"
         target="_blank"
         rel="noopener"
-        class="text-xs text-base-content/40 hover:text-primary transition-colors truncate"
+        class="flex items-center gap-2 px-3 py-2.5 border-t border-base-300 hover:bg-base-300/40 transition-colors group min-w-0"
         title="Made by @surakiatnan"
       >
-        @surakiatnan
-      </a>
-
-      <a
-        href="https://github.com/surakiatnan/open-web-tools"
-        target="_blank"
-        rel="noopener"
-        class="text-xs text-base-content/40 hover:text-base-content/70 transition-colors shrink-0"
-      >
-        GitHub ↗
+        <span class="w-5 h-5 rounded-full bg-primary/15 text-primary flex items-center justify-center text-[10px] font-semibold shrink-0">
+          S
+        </span>
+        <span class="text-xs text-base-content/50 truncate">
+          Made by <span class="text-base-content/70 group-hover:text-primary transition-colors">@surakiatnan</span>
+        </span>
       </a>
     </div>
   </aside>

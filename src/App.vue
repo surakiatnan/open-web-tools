@@ -4,14 +4,13 @@ import { useRoute } from 'vue-router'
 import AppSidebar from '@/components/AppSidebar.vue'
 import ToastStack from '@/components/ToastStack.vue'
 import CommandPalette from '@/components/CommandPalette.vue'
-import { useTheme } from '@/composables/useTheme'
+import ThemePicker from '@/components/ThemePicker.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { useCommandPalette } from '@/composables/useCommandPalette'
 import { toolsById } from '@/tools/registry'
 import { getIcon, Menu, Moon, Sun } from '@/utils/icons'
 
 const route = useRoute()
-const { dark, toggle: toggleTheme } = useTheme()
 const { open, toggle, close } = useSidebar()
 const { toggle: togglePalette } = useCommandPalette()
 
@@ -59,14 +58,18 @@ onUnmounted(() => window.removeEventListener('keydown', onGlobalKeydown))
             {{ currentTool ? currentTool.name : 'Open Dev Kits' }}
           </span>
         </div>
-        <button
-          @click="toggleTheme"
-          class="btn btn-ghost btn-sm btn-square shrink-0"
-          :aria-label="dark ? 'Switch to light theme' : 'Switch to dark theme'"
-        >
-          <Sun v-if="dark" class="w-4 h-4" />
-          <Moon v-else class="w-4 h-4" />
-        </button>
+        <ThemePicker panel-class="top-full right-0 mt-2">
+          <template #trigger="{ toggle: openPicker, dark }">
+            <button
+              @click="openPicker"
+              class="btn btn-ghost btn-sm btn-square shrink-0"
+              :aria-label="dark ? 'Change theme (currently dark)' : 'Change theme (currently light)'"
+            >
+              <Sun v-if="dark" class="w-4 h-4" />
+              <Moon v-else class="w-4 h-4" />
+            </button>
+          </template>
+        </ThemePicker>
       </header>
 
       <main class="flex-1 overflow-y-auto">

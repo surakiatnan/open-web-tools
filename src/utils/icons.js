@@ -6,6 +6,7 @@ import {
   AlignLeft,
   Binary,
   Braces,
+  Check,
   Clock,
   Copy,
   Cpu,
@@ -29,7 +30,7 @@ import {
   X,
 } from 'lucide-vue-next'
 
-export { Menu, Moon, Sun }
+export { Check, Menu, Moon, Sun }
 
 const iconMap = {
   AlignLeft,
