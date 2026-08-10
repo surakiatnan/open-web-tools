@@ -20,6 +20,9 @@ const ALERT_CLASS = { success: 'alert-success', info: 'alert-info', warning: 'al
       >
         <component :is="ICONS[t.type] ?? Info" class="w-4 h-4 shrink-0" />
         <span>{{ t.message }}</span>
+        <button v-if="t.action" @click="t.action.onClick" class="btn btn-xs btn-ghost">
+          {{ t.action.label }}
+        </button>
       </div>
     </TransitionGroup>
   </div>

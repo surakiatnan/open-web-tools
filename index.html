@@ -3,6 +3,37 @@
   <head>
     <meta charset="UTF-8" />
 
+    <!-- ── PWA self-heal ───────────────────────────────────────────────────
+      A stale, still-active service worker can keep serving its cached
+      index.html after a new deploy — one that references JS/CSS hashes the
+      new deploy no longer has. That fails silently as a blank page: the
+      entry script 404s before any of our own JS gets a chance to run, so
+      recovery has to happen from this early inline script instead. On a
+      script/stylesheet load error, drop all service workers + caches and
+      reload once (session-guarded so a genuinely offline user isn't caught
+      in a reload loop).
+    -->
+    <script>
+      (function () {
+        if (!('serviceWorker' in navigator) || sessionStorage.getItem('owt-sw-recovered')) return
+        window.addEventListener('error', function (e) {
+          var tag = e.target
+          if (!tag || (tag.tagName !== 'SCRIPT' && tag.tagName !== 'LINK')) return
+          sessionStorage.setItem('owt-sw-recovered', '1')
+          Promise.all([
+            navigator.serviceWorker.getRegistrations().then(function (regs) {
+              return Promise.all(regs.map(function (r) { return r.unregister() }))
+            }),
+            'caches' in window
+              ? caches.keys().then(function (keys) {
+                  return Promise.all(keys.map(function (k) { return caches.delete(k) }))
+                })
+              : Promise.resolve(),
+          ]).then(function () { location.reload() })
+        }, true)
+      })()
+    </script>
+
     <!-- ── Favicons ────────────────────────────────────────── -->
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -21,14 +52,14 @@
     <meta name="keywords" content="developer tools, open source, free tools, JSON formatter, JWT decoder, UUID generator, QR code generator, hash generator, base64, unix timestamp, HTTP status codes, lorem ipsum, password generator" />
     <meta name="author" content="surakiatnan" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://surakiatnan.github.io/open-web-tools/" />
+    <link rel="canonical" href="https://open-devkits.vercel.app/" />
 
     <!-- ── Open Graph (Facebook / LinkedIn) ────────────────── -->
     <meta property="og:type"        content="website" />
-    <meta property="og:url"         content="https://surakiatnan.github.io/open-web-tools/" />
+    <meta property="og:url"         content="https://open-devkits.vercel.app/" />
     <meta property="og:title"       content="Open Dev Kits — Free Developer Tools" />
     <meta property="og:description" content="Free, open-source browser-based developer utilities. JSON formatter, JWT decoder, hash generator, QR codes, and more. No ads, no paywall." />
-    <meta property="og:image"       content="https://surakiatnan.github.io/open-web-tools/logo-512.png" />
+    <meta property="og:image"       content="https://open-devkits.vercel.app/logo-512.png" />
     <meta property="og:image:width"  content="512" />
     <meta property="og:image:height" content="512" />
     <meta property="og:site_name"   content="Open Dev Kits" />
@@ -38,7 +69,7 @@
     <meta name="twitter:card"        content="summary" />
     <meta name="twitter:title"       content="Open Dev Kits — Free Developer Tools" />
     <meta name="twitter:description" content="Free, open-source browser-based developer utilities. No ads, no paywall, no login." />
-    <meta name="twitter:image"       content="https://surakiatnan.github.io/open-web-tools/logo-512.png" />
+    <meta name="twitter:image"       content="https://open-devkits.vercel.app/logo-512.png" />
     <meta name="twitter:creator"     content="@surakiatnan" />
   </head>
   <body>
