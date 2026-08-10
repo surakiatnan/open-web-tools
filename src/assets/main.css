@@ -1,14 +1,16 @@
 @import "tailwindcss";
 @plugin "daisyui";
 
-/* ─── OWT Dark (default) ──────────────────────────────────────────────────── */
 /*
-  Palette source:
-    Navy   #124076  → oklch(28% 0.12 258)  — brand / sidebar base / light-mode primary
-    Sage   #7F9F80  → oklch(64% 0.06 148)  — dark-mode primary / light-mode secondary
-    Yellow #F9E897  → oklch(92% 0.12  99)  — warning / accent highlight
-    Orange #FFC374  → oklch(83% 0.15  65)  — accent / call-to-action contrast
+  Four selectable themes, two per mode — see src/composables/useTheme.js for the
+  picker list. Each light/dark pair shares an accent "flavor" so the sidebar
+  (always dark) can borrow the matching dark palette when a light theme is active.
+
+    Ocean (default) — Navy #124076 / Sage #7F9F80 / Orange #FFC374
+    Slate            — Violet #B48CFF / Teal #4FD1C5 / Rose #FF7A9C
 */
+
+/* ─── OWT Dark — Ocean (default) ──────────────────────────────────────────── */
 
 [data-theme="owt-dark"] {
   color-scheme: dark;
@@ -54,7 +56,52 @@
   --noise:         0;
 }
 
-/* ─── OWT Light ───────────────────────────────────────────────────────────── */
+/* ─── OWT Dark — Slate ────────────────────────────────────────────────────── */
+[data-theme="owt-dark-slate"] {
+  color-scheme: dark;
+
+  /* ── Surfaces ── */
+  --color-base-100:    oklch(15% 0.02 290);
+  --color-base-200:    oklch(11% 0.02 290);
+  --color-base-300:    oklch(21% 0.03 290);
+  --color-base-content:oklch(93% 0.01 290);
+
+  /* ── Neutral (sidebar "ground floor") ── */
+  --color-neutral:         oklch( 8% 0.02 290);
+  --color-neutral-content: oklch(85% 0.01 290);
+
+  /* ── Primary → Violet (muted, matches Ocean's low-chroma feel) ── */
+  --color-primary:         oklch(68% 0.11 300);
+  --color-primary-content: oklch(16% 0.04 300);
+
+  /* ── Secondary → Teal ── */
+  --color-secondary:         oklch(62% 0.08 200);
+  --color-secondary-content: oklch(14% 0.03 200);
+
+  /* ── Accent → Rose ── */
+  --color-accent:         oklch(74% 0.12 20);
+  --color-accent-content: oklch(20% 0.05 20);
+
+  /* ── Semantic ── */
+  --color-info:            oklch(62% 0.14 240);
+  --color-info-content:    oklch(12%  0    0);
+  --color-success:         oklch(60% 0.12 155);
+  --color-success-content: oklch(12%  0    0);
+  --color-warning:         oklch(85% 0.14  85);
+  --color-warning-content: oklch(18% 0.05  85);
+  --color-error:           oklch(64% 0.22  20);
+  --color-error-content:   oklch(96%  0    0);
+
+  /* ── Shape ── */
+  --rounded-box:   0.75rem;
+  --rounded-btn:   0.5rem;
+  --rounded-badge: 9999px;
+  --border:        1px;
+  --depth:         1;
+  --noise:         0;
+}
+
+/* ─── OWT Light — Ocean ───────────────────────────────────────────────────── */
 [data-theme="owt-light"] {
   color-scheme: light;
 
@@ -88,6 +135,51 @@
   --color-warning:         oklch(78% 0.12  99);  /* muted yellow — readable on white */
   --color-warning-content: oklch(18% 0.05  99);
   --color-error:           oklch(58% 0.22  25);
+  --color-error-content:   oklch(96%  0    0);
+
+  /* ── Shape ── */
+  --rounded-box:   0.75rem;
+  --rounded-btn:   0.5rem;
+  --rounded-badge: 9999px;
+  --border:        1px;
+  --depth:         1;
+  --noise:         0;
+}
+
+/* ─── OWT Light — Warm ────────────────────────────────────────────────────── */
+[data-theme="owt-light-warm"] {
+  color-scheme: light;
+
+  /* ── Surfaces ── */
+  --color-base-100:    oklch(99% 0.008 75);    /* warm white — cards, inputs */
+  --color-base-200:    oklch(95% 0.015 70);    /* cream page background */
+  --color-base-300:    oklch(88% 0.025 60);    /* tan borders / dividers */
+  --color-base-content:oklch(24% 0.03  40);    /* warm dark-brown text */
+
+  /* ── Neutral ── */
+  --color-neutral:         oklch(26% 0.03  40);
+  --color-neutral-content: oklch(97% 0.005 60);
+
+  /* ── Primary → Terracotta ── */
+  --color-primary:         oklch(52% 0.16 40);
+  --color-primary-content: oklch(97% 0.01 40);
+
+  /* ── Secondary → Forest green ── */
+  --color-secondary:         oklch(48% 0.09 150);
+  --color-secondary-content: oklch(96% 0.01 150);
+
+  /* ── Accent → Golden ── */
+  --color-accent:         oklch(76% 0.13 80);
+  --color-accent-content: oklch(20% 0.05 80);
+
+  /* ── Semantic ── */
+  --color-info:            oklch(55% 0.14 235);
+  --color-info-content:    oklch(96%  0    0);
+  --color-success:         oklch(52% 0.11 150);
+  --color-success-content: oklch(96%  0    0);
+  --color-warning:         oklch(76% 0.13  80);
+  --color-warning-content: oklch(20% 0.05  80);
+  --color-error:           oklch(56% 0.20  25);
   --color-error-content:   oklch(96%  0    0);
 
   /* ── Shape ── */
