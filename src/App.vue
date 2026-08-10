@@ -5,6 +5,7 @@ import AppSidebar from '@/components/AppSidebar.vue'
 import ToastStack from '@/components/ToastStack.vue'
 import CommandPalette from '@/components/CommandPalette.vue'
 import ThemePicker from '@/components/ThemePicker.vue'
+import PwaInstallBanner from '@/components/PwaInstallBanner.vue'
 import { useSidebar } from '@/composables/useSidebar'
 import { useCommandPalette } from '@/composables/useCommandPalette'
 import { toolsById } from '@/tools/registry'
@@ -79,6 +80,7 @@ onUnmounted(() => window.removeEventListener('keydown', onGlobalKeydown))
 
     <ToastStack />
     <CommandPalette />
+    <PwaInstallBanner />
   </div>
 </template>
 
