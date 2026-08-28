@@ -33,6 +33,8 @@ import urlEncoder from './url-encoder'
 import colorConverter from './color-converter'
 import regexTester from './regex-tester'
 import diffChecker from './diff-checker'
+import markdownPreviewer from './markdown-previewer'
+import markdownTable from './markdown-table'
 
 /** @type {import('./types').ToolMeta[]} */
 export const tools = [
@@ -40,6 +42,7 @@ export const tools = [
   jsonFormatter, jwtDecoder, hashGenerator, unixTimestamp, baseConverter,
   httpStatus, loremIpsum, imageBase64,
   urlEncoder, colorConverter, regexTester, diffChecker,
+  markdownPreviewer, markdownTable,
 ]
 
 /** Quick lookup by ID */
